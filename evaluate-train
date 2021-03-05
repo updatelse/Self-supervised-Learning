@@ -19,7 +19,7 @@ def train(model, train_loader, eval_loader, opt):
     for param_group in optim.param_groups:
         param_group['lr'] = opt.learning_rate
 
-    scheduler = MultiStepLR(optim, milestones=[10,15,20,25,30,35], gamma=0.5)
+    scheduler = MultiStepLR(optim, milestones=[10,15,20,25,30,35], gamma=0.5)   #learning rate
     scheduler.last_epoch = opt.s_epoch
 
     
@@ -43,7 +43,7 @@ def train(model, train_loader, eval_loader, opt):
             q = q.cuda()
             a = a.cuda()
 
-            # 标签样本
+            
             if epoch < opt.pretrain_epoches:
                 logits_pos, _= model(q, v, False)
                 if opt.ml_loss:
@@ -73,7 +73,7 @@ def train(model, train_loader, eval_loader, opt):
             total_loss += loss.item() * v.size(0)
             total_bce_loss += bce_loss_pos.item() * v.size(0)
 
-            if epoch < opt.pretrain_epoches: #pretrain
+            if epoch < opt.pretrain_epoches:  #pretrain
                 total_self_loss = 0
                 train_score_neg = 0
             else: #fintune
